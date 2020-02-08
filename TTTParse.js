@@ -3,8 +3,6 @@ const cheerio = require('cheerio');
 const urlAbout = 'https://ttt.studio/company/';
 const urlCareer = 'https://ttt.studio/careers/';
 
-
-
 function tttParse(url) {
     return new Promise((resolve, reject) => {
         rp(url)

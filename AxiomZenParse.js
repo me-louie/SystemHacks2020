@@ -3,14 +3,13 @@ const cheerio = require('cheerio');
 const urlAbout = 'https://www.axiomzen.co/about';
 const urlCareer = 'https://www.axiomzen.co/careers';
 
-
-
 function zenParse(url) {
     return new Promise((resolve, reject) => {
         rp(url)
             .then((html) => {
                 let text = [];
                 let $ = cheerio.load(html);
+                console.log($);
                 let data = $('body').find('p').text();
                 text.push(data);
                 resolve(text);
