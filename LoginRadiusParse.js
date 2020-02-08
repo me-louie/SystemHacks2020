@@ -12,8 +12,8 @@ function zenParse(url) {
                 let text = [];
                 let $ = cheerio.load(html);
                 let data = $('body').find('p').text().split('\n');
-                let data2 = data.join('');
-                console.log(data2);
+                let data2 = data.join('').replace(/\s\s+/g, ' ');
+                // console.log(data2);
                 // console.log(data[0]);
                 text.push(data2);
                 resolve(text);
@@ -28,14 +28,14 @@ function zenParse(url) {
 zenParse(urlAbout)
     .then((text) => {
         console.log(text);
-        console.log(text.length);
+        // console.log(text.length);
     }).catch((err) => {
         console.log(err);
     });
 
-// zenParse(urlCareer)
-//     .then((text) => {
-//         console.log(text);
-//     }).catch((err) => {
-//         console.log(err);
-// });
+zenParse(urlCareer)
+    .then((text) => {
+        console.log(text);
+    }).catch((err) => {
+        console.log(err);
+});
