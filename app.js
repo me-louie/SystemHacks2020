@@ -1,13 +1,14 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const potusScraper = require('./potusScraper');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -39,3 +40,46 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+const http = require('http');
+const fs = require('fs');
+
+const hostname = '127.0.0.1';
+const port = 3000;
+
+const server = http.createServer((req, res) => {
+    res.statusCode = 200;
+    server.setTimeout(10000);
+    res.setHeader('Content-Type', 'text/html');
+
+    fs.readFile('./index.html', function(error, fileContent){
+        if(error){
+            res.writeHead(500, {'Content-Type': 'text/plain'});
+            res.end('Error');
+        }
+        else{
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(fileContent);
+            res.end();
+        }
+    });
+
+    // wrapping potusScraper() in async function to operate on resolve value
+    // async function f() {
+    //   return potusScraper();
+    // }
+    //
+    // f().then((result) => {
+    //   res.write(JSON.stringify(result));
+    //   res.end("end good");
+    // }).catch((err) => {
+    //   res.write(err.toString())
+    //   res.end("end bad");
+    // });
+
+
+  });
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
