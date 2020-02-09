@@ -50,19 +50,34 @@ const port = 3000;
 const server = http.createServer((req, res) => {
     res.statusCode = 200;
     server.setTimeout(10000);
-    res.setHeader('Content-Type', 'text/plain');
-    // wrapping potusScraper() in async function to operate on resolve value
-    async function f() {
-      return potusScraper();
-    }
+    res.setHeader('Content-Type', 'text/html');
 
-    f().then((result) => {
-      res.write(JSON.stringify(result));
-      res.end("end good");
-    }).catch((err) => {
-      res.write(err.toString())
-      res.end("end bad");
+    fs.readFile('./index.html', function(error, fileContent){
+        if(error){
+            res.writeHead(500, {'Content-Type': 'text/plain'});
+            res.end('Error');
+        }
+        else{
+            res.writeHead(200, {'Content-Type': 'text/html'});
+            res.write(fileContent);
+            res.end();
+        }
     });
+
+    // wrapping potusScraper() in async function to operate on resolve value
+    // async function f() {
+    //   return potusScraper();
+    // }
+    //
+    // f().then((result) => {
+    //   res.write(JSON.stringify(result));
+    //   res.end("end good");
+    // }).catch((err) => {
+    //   res.write(err.toString())
+    //   res.end("end bad");
+    // });
+
+
   });
 
 server.listen(port, hostname, () => {
